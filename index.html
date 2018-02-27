@@ -28,116 +28,186 @@
 
   <!-- JavaScript
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-<script>
-window.onload = populateTable("All");
 
-function populateTable(passedCity) {
-    var rawArray = [];
-    rawArray.push({name:"John", time:new Date(2018,1,27,21,59,0,0).getTime() - new Date().getTime(), location:"Summerlin", city: "LV"});
-    rawArray.push({name:"Dude", time:new Date(2018,1,28,21,59,0,0).getTime() - new Date().getTime(), location:"Summerlin", city: "LV"});
-
-    for (i = 0; i < rawArray.length; i++) {
-      if (passedCity == "All" || rawArray[i].city == passedCity) {
-        if (rawArray[i].time > -14400000 && rawArray[i].time < 86400000) {
-          addRow(rawArray[i].name, rawArray[i].time, rawArray[i].location);
-        }
-      }
-    }
-    return
-  }
-
-function addRow(name, time, location){
-         if (!document.getElementsByTagName) return;
-         tabBody=document.getElementsByTagName("tbody").item(0);
-         row=document.createElement("tr");
-         cell1 = document.createElement("td");
-         cell2 = document.createElement("td");
-         cell3 = document.createElement("td");
-         name=document.createTextNode(name);
-         readyState=document.createTextNode(calcReady(time));
-         location=document.createTextNode(location);
-         cell1.appendChild(name);
-         cell2.appendChild(readyState);
-         cell3.appendChild(location);
-         row.appendChild(cell1);
-         row.appendChild(cell2);
-         row.appendChild(cell3);
-         tabBody.appendChild(row);
-         return
-}
-
-function calcReady(difference) {
-    if (difference < 0) {
-      return "Ready";
-    } else {
-        var hours = Math.floor(((difference / 1000) / 60) / 60);
-        difference = difference - (((hours*60)*60)*1000);
-        var minutes = Math.floor((difference/1000) / 60);
-        difference = difference - ((minutes*60)*1000);
-        var seconds = Math.floor(difference/1000);
-        return padN(hours) + ":" + padN(minutes) + ":" + padN(seconds);
-    }
-  }
-
-function padN(Num) {
-  if (Num < 10) {
-    return "0" + Num;
-    } else {
-      return Num;
-  }
-}
-</script>
 </head>
 
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 <body>
   <div class="container">
-    <div class="row">
-      <div class="five columns"></div>
-      <div class="two columns">
-      <label for="cityInput">City</label></div>
-      <div class="two columns">
-      <select class="u-full-width" id="cityInput">
-        <option value="Option 1">All Cities</option>
-        <option value="Option 2">Las Vegas</option>
-        <option value="Option 3">Los Angeles</option>
-        <option value="Option 4">New York</option>
-        <option value="Option 5">Philadelphia</option>
-        <option value="Option 6">Chicago</option>
-        <option value="Option 7">Detroit</option>
-        <option value="Option 8">Seattle</option>
-      </select></div>
+    <div class="docs-section" id="head" style="margin-top: 5%">
+      <div class="row">
+        <div class="twelve columns"><h3 align="center">Las Vegas HitList</h3></div>
+      </div>
     </div>
-    <div class="row">
-      <div class="one column" style="margin-top: 5%"></div>
-      <div class="ten columns" style="margin-top: 5%">
-        <table class="u-full-width">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Available In</th>
-              <th>Location</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Dave Gamache</td>
-              <td>26</td>
-              <td>San Francisco</td>
-            </tr>
-            <tr>
-              <td>Dwayne Johnson</td>
-              <td>42</td>
-              <td>Hayward</td>
-            </tr>
-          </tbody>
-        </table>
+
+    <div class="docs-section" id="info">
+      <div class="row">
+        <div class="twelve columns">
+          <p align="center">This list is regularly updated by the Las Vegas Family.<br>
+          It's supposed to contain Player Innactive Accounts <i>(IA's)</i> and NPC Required Inactive Accounts <i>(RIA's)</i>. <br>
+          Do not shoot at Character who are sponsored!</p>
+          <h6 align="center">♦</h6>
+          <p align="center"><b>Anonymous Key</b><br>
+          <i>(Donations are evenly distributed among those involved in coming up with this list)</i><br>
+          90b0bcc70cbb0cd53c6fbfb6ed0aafa5</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="docs-section" id="dropRow" style="margin-top: 5%">
+      <div class="row">
+        <div class="five columns"><p align="left" id="lastUpdateP"></p></div>
+        <div class="two columns">
+          <select class="u-full-width" id="cityInput" onchange="swapCity()">
+            <option value="All Cities">All Cities</option>
+            <option value="Las Vegas">Las Vegas</option>
+            <option value="Los Angeles">Los Angeles</option>
+            <option value="New York">New York</option>
+            <option value="Philadelphia">Philadelphia</option>
+            <option value="Chicago">Chicago</option>
+            <option value="Detroit">Detroit</option>
+            <option value="Seattle">Seattle</option>
+          </select>
+        </div>
+        <div class="five columns"><p align="right" id="showingP"></p></div>
+      </div>
+    </div>
+
+    <div class="docs-section" id="charWarn">
+      <div class="row">
+        <div class="twelve columns">
+          <p align="center"><i>Showing characters between 7.16 and 6 days of age.</i></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="docs-section" id="table">
+      <div class="row">
+        <div class="one columns">.</div>
+        <div class="ten columns">
+          <table class="u-full-width">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Available In</th>
+                <th>Location</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+          </div>
         </div>
       </div>
     </div>
 
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+<script>
+  window.onload = populateTable("All");
+  document.getElementById("lastUpdateP").innerHTML = "<b>Last Update</b> 27/02/2018 14:20";
+
+  function swapCity() {
+    cityName = document.getElementById("cityInput").value;
+    switch (cityName) {
+      case "All Cities":
+        populateTable("All");
+        break;
+      case "Las Vegas":
+        populateTable("LV");
+        break;
+      case "Los Angeles":
+        populateTable("LA");
+        break;
+      case "New York":
+        populateTable("NY");
+        break;
+      case "Philadelphia":
+        populateTable("PH");
+        break;
+      case "Philadelphia":
+        populateTable("PH");
+        break;
+      case "Chicago":
+        populateTable("CH");
+        break;
+      case "Detroit":
+        populateTable("DT");
+        break;
+      case "Seattle":
+        populateTable("SEA");
+    }
+
+  }
+
+  function popAllCharsArray() {
+    var rawArray = [];
+    rawArray.push({name:"John", time:new Date(2018,1,27,21,59,0,0).getTime() - new Date().getTime(), location:"Summerlin", city: "LV"});
+    rawArray.push({name:"Dude", time:new Date(2018,1,28,21,59,0,0).getTime() - new Date().getTime(), location:"Summerlin", city: "LV"});
+    return rawArray;
+  }
+
+  function populateTable(passedCity) {
+    rawArray = popAllCharsArray();
+    document.getElementsByTagName("tbody").item(0).innerHTML = ""
+
+    var statCount = 0;
+    for (i = 0; i < rawArray.length; i++) {
+      if (passedCity == "All" || rawArray[i].city == passedCity) {
+        if (rawArray[i].time > -14400000 && rawArray[i].time < 86400000) {
+          addRow(rawArray[i].name, rawArray[i].time, rawArray[i].location);
+          statCount++;
+        }
+      }
+      if (i == rawArray.length - 1) {
+        document.getElementById("showingP").innerHTML = statCount + " character(s) in <b>" + document.getElementById("cityInput").value + ".</b>";
+      }
+    }
+      return
+    }
+
+  function addRow(name, time, location){
+     if (!document.getElementsByTagName) return;
+     tabBody=document.getElementsByTagName("tbody").item(0);
+     row=document.createElement("tr");
+     cell1 = document.createElement("td");
+     cell2 = document.createElement("td");
+     cell3 = document.createElement("td");
+     name=document.createTextNode(name);
+     readyState=document.createTextNode(calcReady(time));
+     location=document.createTextNode(location);
+     cell1.appendChild(name);
+     cell2.appendChild(readyState);
+     cell3.appendChild(location);
+     row.appendChild(cell1);
+     row.appendChild(cell2);
+     row.appendChild(cell3);
+     tabBody.appendChild(row);
+     return
+  }
+
+  function calcReady(difference) {
+      if (difference < 0) {
+        return "Ready";
+      } else {
+          var hours = Math.floor(((difference / 1000) / 60) / 60);
+          difference = difference - (((hours*60)*60)*1000);
+          var minutes = Math.floor((difference/1000) / 60);
+          difference = difference - ((minutes*60)*1000);
+          var seconds = Math.floor(difference/1000);
+          return padN(hours) + ":" + padN(minutes) + ":" + padN(seconds) + "h";
+      }
+    }
+
+  function padN(Num) {
+    if (Num < 10) {
+      return "0" + Num;
+      } else {
+        return Num;
+    }
+  }
+  </script>
 </body>
 </html>
