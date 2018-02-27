@@ -26,42 +26,116 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href="images/favicon.png">
 
+  <!-- JavaScript
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<script>
+window.onload = populateTable("All");
+
+function populateTable(passedCity) {
+    var rawArray = [];
+    rawArray.push({name:"John", time:new Date(2018,1,27,21,59,0,0).getTime() - new Date().getTime(), location:"Summerlin", city: "LV"});
+    rawArray.push({name:"Dude", time:new Date(2018,1,28,21,59,0,0).getTime() - new Date().getTime(), location:"Summerlin", city: "LV"});
+
+    for (i = 0; i < rawArray.length; i++) {
+      if (passedCity == "All" || rawArray[i].city == passedCity) {
+        if (rawArray[i].time > -14400000 && rawArray[i].time < 86400000) {
+          addRow(rawArray[i].name, rawArray[i].time, rawArray[i].location);
+        }
+      }
+    }
+    return
+  }
+
+function addRow(name, time, location){
+         if (!document.getElementsByTagName) return;
+         tabBody=document.getElementsByTagName("tbody").item(0);
+         row=document.createElement("tr");
+         cell1 = document.createElement("td");
+         cell2 = document.createElement("td");
+         cell3 = document.createElement("td");
+         name=document.createTextNode(name);
+         readyState=document.createTextNode(calcReady(time));
+         location=document.createTextNode(location);
+         cell1.appendChild(name);
+         cell2.appendChild(readyState);
+         cell3.appendChild(location);
+         row.appendChild(cell1);
+         row.appendChild(cell2);
+         row.appendChild(cell3);
+         tabBody.appendChild(row);
+         return
+}
+
+function calcReady(difference) {
+    if (difference < 0) {
+      return "Ready";
+    } else {
+        var hours = Math.floor(((difference / 1000) / 60) / 60);
+        difference = difference - (((hours*60)*60)*1000);
+        var minutes = Math.floor((difference/1000) / 60);
+        difference = difference - ((minutes*60)*1000);
+        var seconds = Math.floor(difference/1000);
+        return padN(hours) + ":" + padN(minutes) + ":" + padN(seconds);
+    }
+  }
+
+function padN(Num) {
+  if (Num < 10) {
+    return "0" + Num;
+    } else {
+      return Num;
+  }
+}
+</script>
 </head>
-<body>
 
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<body>
   <div class="container">
     <div class="row">
-      <div class="one column" style="margin-top: 5%"> </div>
+      <div class="five columns"></div>
+      <div class="two columns">
+      <label for="cityInput">City</label></div>
+      <div class="two columns">
+      <select class="u-full-width" id="cityInput">
+        <option value="Option 1">All Cities</option>
+        <option value="Option 2">Las Vegas</option>
+        <option value="Option 3">Los Angeles</option>
+        <option value="Option 4">New York</option>
+        <option value="Option 5">Philadelphia</option>
+        <option value="Option 6">Chicago</option>
+        <option value="Option 7">Detroit</option>
+        <option value="Option 8">Seattle</option>
+      </select></div>
+    </div>
+    <div class="row">
+      <div class="one column" style="margin-top: 5%"></div>
       <div class="ten columns" style="margin-top: 5%">
-        <table class="u-full-width" >
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Age</th>
-      <th>Ready?</th>
-      <th>Location</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Dave Gamache</td>
-      <td>26</td>
-      <td>Male</td>
-      <td>San Francisco</td>
-    </tr>
-    <tr>
-      <td>Dwayne Johnson</td>
-      <td>42</td>
-      <td>Male</td>
-      <td>Hayward</td>
-    </tr>
-  </tbody>
-</table>
+        <table class="u-full-width">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Available In</th>
+              <th>Location</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Dave Gamache</td>
+              <td>26</td>
+              <td>San Francisco</td>
+            </tr>
+            <tr>
+              <td>Dwayne Johnson</td>
+              <td>42</td>
+              <td>Hayward</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
       </div>
     </div>
-  </div>
 
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
