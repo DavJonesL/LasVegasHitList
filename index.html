@@ -106,11 +106,16 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
 <script>
-  window.onload = populateTable("All");
+  window.onload = loopUpdate();
   document.getElementById("lastUpdateP").innerHTML = "<b>Last Update</b> 01/03/2018";
 
+  function loopUpdate() {
+    swapCity();
+    var t = setTimeout(loopUpdate, 1000);
+  }
+
   function swapCity() {
-    cityName = document.getElementById("cityInput").value;
+    var cityName = document.getElementById("cityInput").value;
     switch (cityName) {
       case "All Cities":
         populateTable("All");
@@ -123,9 +128,6 @@
         break;
       case "New York":
         populateTable("NY");
-        break;
-      case "Philadelphia":
-        populateTable("PH");
         break;
       case "Philadelphia":
         populateTable("PH");
@@ -205,7 +207,8 @@
   }
 
   function getUTC(now) {
-    return new Date(now.toUTCString());
+    now = new Date(now.toUTCString());
+    return now.getTime() + (now.getTimezoneOffset() * 60000);
   }
 
   function popAllCharsArray() {
