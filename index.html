@@ -55,6 +55,12 @@
       </div>
     </div>
 
+    <div class="container">
+      <ul class="navbar-list">
+        <li class="navbar-item"><a class="navbar-link" href="#intro">Intro</a></li>
+      </ul>
+    </div>
+    
     <div class="docs-section" id="dropRow" style="margin-top: 5%">
       <div class="row">
         <div class="five columns"><p align="left" id="lastUpdateP"></p></div>
@@ -144,7 +150,7 @@
   }
 
   function populateTable(passedCity) {
-    rawArray = popAllCharsArray();
+    var rawArray = popAllCharsArray();
     document.getElementsByTagName("tbody").item(0).innerHTML = ""
 
     var statCount = 0;
@@ -211,7 +217,7 @@
     return now.getTime() + (now.getTimezoneOffset() * 60000);
   }
 
-  function popAllCharsArray() {
+function popAllCharsArray() {
     var rawArray = [];
     <!-- Start Here -->
 		rawArray.push({name:"Mavarro", time: new Date(2018,2,2,20,36,0,0).getTime() - getUTC(new Date()), location:"The Loop",  city: "CH"});
@@ -615,7 +621,7 @@
 		rawArray.push({name:"Cory_Allison", time: new Date(2018,2,11,1,45,0,0).getTime() - getUTC(new Date()), location:"South Side",  city: "CH"});
 		rawArray.push({name:"Lawrencesherrock", time: new Date(2018,2,11,1,46,0,0).getTime() - getUTC(new Date()), location:"South Side",  city: "CH"});
 		rawArray.push({name:"GrimIronFoot", time: new Date(2018,2,11,2,10,0,0).getTime() - getUTC(new Date()), location:"The Loop",  city: "CH"});
-<!-- End Here -->
+    <!-- End Here -->
     return rawArray;
   }
   </script>
